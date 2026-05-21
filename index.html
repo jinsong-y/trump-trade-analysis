@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Trump 财务交易分析 | OGE Form 278-T</title>
+<title data-i18n-text="header_title">Trump 财务交易分析</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
@@ -12,179 +12,159 @@
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 img,svg,canvas{max-width:100%}
 
-/* ─── Header ─── */
-.header{background:linear-gradient(135deg,#1e3a5f,#0f1117);border-bottom:1px solid var(--border);padding:1.5rem 1rem;text-align:center}
+.header{background:linear-gradient(135deg,#1e3a5f,#0f1117);border-bottom:1px solid var(--border);padding:1.5rem 1rem;text-align:center;position:relative}
 .header h1{font-size:clamp(1.2rem,3.5vw,2rem);background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem}
 .header p{color:var(--muted);font-size:clamp(.75rem,1.8vw,.95rem)}
 
-/* ─── Container ─── */
+/* Lang toggle */
+#langToggle{position:absolute;top:1rem;right:1rem;padding:.35rem .9rem;border-radius:8px;border:1px solid var(--border);background:rgba(59,130,246,.12);color:var(--accent);cursor:pointer;font-size:clamp(.75rem,1.4vw,.88rem);font-weight:600;transition:all .15s;z-index:10}
+#langToggle:hover{background:rgba(59,130,246,.25);border-color:var(--accent)}
+@media(max-width:600px){#langToggle{position:static;display:block;margin:.75rem auto 0}}
+
 .container{max-width:1400px;margin:0 auto;padding:clamp(.75rem,2vw,1.5rem)}
 
-/* ─── KPI ─── */
-.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr));gap:.75rem;margin-bottom:1.5rem}
-.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;transition:transform .15s}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,155px),1fr));gap:.75rem;margin-bottom:1.5rem}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:.85rem .7rem;text-align:center;transition:transform .15s}
 .kpi-card:hover{transform:translateY(-2px)}
-.kpi-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.3rem}
-.kpi-value{font-size:clamp(1.3rem,3vw,1.8rem);font-weight:700}
-.kpi-sub{font-size:.72rem;color:var(--muted);margin-top:.15rem}
+.kpi-label{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.25rem}
+.kpi-value{font-size:clamp(1.2rem,2.8vw,1.7rem);font-weight:700}
+.kpi-sub{font-size:.68rem;color:var(--muted);margin-top:.1rem}
 .kpi-blue .kpi-value{color:var(--accent)}.kpi-green .kpi-value{color:var(--green)}.kpi-red .kpi-value{color:var(--red)}.kpi-yellow .kpi-value{color:var(--yellow)}.kpi-purple .kpi-value{color:var(--purple)}.kpi-orange .kpi-value{color:var(--orange)}.kpi-cyan .kpi-value{color:var(--cyan)}
 
-/* ─── Section ─── */
 .section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:clamp(1rem,2.5vw,1.5rem);margin-bottom:1.25rem}
 .section h2{font-size:clamp(1rem,2.2vw,1.15rem);margin-bottom:.75rem;padding-bottom:.6rem;border-bottom:1px solid var(--border)}
 .section h3{font-size:clamp(.85rem,1.8vw,.95rem);color:var(--muted);margin:1.2rem 0 .5rem}
 
-/* ─── Grid ─── */
 .g2{display:grid;grid-template-columns:1fr;gap:1.25rem}
 .g3{display:grid;grid-template-columns:1fr;gap:1rem}
 @media(min-width:768px){.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}}
-@media(min-width:1100px){.g3-wide{grid-template-columns:1fr 1fr}}
 
-/* ─── Chart ─── */
-.ch{position:relative;width:100%}.ch-sm{height:min(300px,50vw)}.ch-md{height:min(380px,65vw)}.ch-lg{height:min(420px,70vw)}
+.ch{position:relative;width:100%}.ch-sm{height:min(280px,50vw)}.ch-md{height:min(360px,62vw)}.ch-lg{height:min(400px,68vw)}
 
-/* ─── Table ─── */
-.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;max-height:none}
-.tw.scroll-y{max-height:450px;overflow-y:auto}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px}
+.tw.scroll-y{max-height:420px;overflow-y:auto}
 .tw::-webkit-scrollbar{width:5px;height:5px}.tw::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-table.dt{width:100%;border-collapse:collapse;font-size:clamp(.72rem,1.5vw,.85rem);min-width:500px}
-table.dt th{background:rgba(59,130,246,.1);color:var(--accent);padding:.5rem .6rem;text-align:left;font-weight:600;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:1}
-table.dt td{padding:.4rem .6rem;border-bottom:1px solid var(--border)}
+table.dt{width:100%;border-collapse:collapse;font-size:clamp(.7rem,1.4vw,.82rem);min-width:460px}
+table.dt th{background:rgba(59,130,246,.1);color:var(--accent);padding:.45rem .55rem;text-align:left;font-weight:600;border-bottom:2px solid var(--border);white-space:nowrap;position:sticky;top:0;z-index:1}
+table.dt td{padding:.35rem .55rem;border-bottom:1px solid var(--border)}
 table.dt tr:hover{background:rgba(59,130,246,.05)}
 table.dt .n{text-align:right;font-variant-numeric:tabular-nums}
-.tag{display:inline-block;padding:1px 7px;border-radius:9999px;font-size:.7rem;font-weight:600}
-.tag-s{background:rgba(239,68,68,.15);color:var(--red)}.tag-p{background:rgba(34,197,94,.15);color:var(--green)}.tag-u{background:rgba(168,85,247,.15);color:var(--purple)}
+.tag{display:inline-block;padding:1px 7px;border-radius:9999px;font-size:.68rem;font-weight:600}
+.tag-s{background:rgba(239,68,68,.15);color:var(--red)}.tag-p{background:rgba(34,197,94,.15);color:var(--green)}
 
-/* ─── Insight ─── */
-.ins{background:rgba(59,130,246,.08);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.85rem 1rem;margin:.75rem 0;font-size:clamp(.8rem,1.6vw,.9rem);line-height:1.7}
+.ins{background:rgba(59,130,246,.08);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:.8rem 1rem;margin:.75rem 0;font-size:clamp(.78rem,1.5vw,.88rem);line-height:1.7}
 .ins strong{color:var(--accent)}
 .ins-r{border-left-color:var(--red)}.ins-r strong{color:var(--red)}
 .ins-g{border-left-color:var(--green)}.ins-g strong{color:var(--green)}
 .ins-y{border-left-color:var(--yellow)}.ins-y strong{color:var(--yellow)}
 
-/* ─── Timeline bar ─── */
-.tbar{display:flex;height:28px;border-radius:6px;overflow:hidden;margin:.35rem 0}
-.tbar div{display:flex;align-items:center;justify-content:center;font-size:clamp(.6rem,1.2vw,.7rem);font-weight:600;color:#fff}
-
-/* ─── Holding bars ─── */
-.hrow{display:flex;align-items:center;gap:.5rem;padding:.4rem 0;border-bottom:1px solid rgba(42,45,58,.4)}
-.hbar{height:20px;border-radius:3px;min-width:3px;transition:width .4s}
-.hlbl{font-size:clamp(.72rem,1.4vw,.82rem);min-width:100px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.hval{font-size:clamp(.72rem,1.4vw,.82rem);color:var(--muted);margin-left:auto;white-space:nowrap}
-
-/* ─── Tabs ─── */
-.tabs{display:flex;gap:.4rem;margin-bottom:1rem;flex-wrap:wrap}
-.tab{padding:.35rem .8rem;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-size:clamp(.75rem,1.4vw,.85rem);transition:all .15s}
-.tab.on,.tab:hover{background:rgba(59,130,246,.15);color:var(--accent);border-color:var(--accent)}
-.panel{display:none}.panel.on{display:block}
-
-/* ─── Feature cards ─── */
-.fcard{padding:.85rem;border-radius:8px}
-.fcard-icon{font-size:1.5rem;margin-bottom:.3rem}
-.fcard-title{font-weight:600;margin-bottom:.3rem;font-size:clamp(.82rem,1.5vw,.9rem)}
-.fcard-desc{font-size:clamp(.75rem,1.4vw,.85rem);color:var(--muted);line-height:1.6}
-
-/* ─── Summary cards ─── */
-.scard{padding:.85rem;border-radius:8px}
-.scard-title{font-weight:600;margin-bottom:.3rem;font-size:clamp(.82rem,1.5vw,.9rem)}
-.scard-desc{font-size:clamp(.75rem,1.4vw,.85rem);color:var(--muted);line-height:1.6}
-
-/* ─── Sell/Buy hero ─── */
 .hero-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-bottom:1rem}
 @media(min-width:768px){.hero-grid{grid-template-columns:1fr 1fr}}
-.hero-card{border-radius:12px;padding:1.25rem;border:1px solid var(--border)}
+.hero-card{border-radius:12px;padding:1.1rem;border:1px solid var(--border)}
 .hero-card.sell{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(239,68,68,.02))}
 .hero-card.buy{background:linear-gradient(135deg,rgba(34,197,94,.08),rgba(34,197,94,.02))}
-.hero-num{font-size:clamp(1.8rem,4vw,2.5rem);font-weight:800}
+.hero-num{font-size:clamp(1.6rem,3.5vw,2.3rem);font-weight:800}
 .hero-card.sell .hero-num{color:var(--red)}.hero-card.buy .hero-num{color:var(--green)}
-.hero-label{font-size:clamp(.7rem,1.3vw,.8rem);color:var(--muted);text-transform:uppercase;margin-bottom:.15rem}
-.hero-stat{display:flex;justify-content:space-between;font-size:clamp(.75rem,1.4vw,.85rem);padding:.25rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.hero-label{font-size:clamp(.68rem,1.2vw,.78rem);color:var(--muted);text-transform:uppercase;margin-bottom:.1rem}
+.hero-stat{display:flex;justify-content:space-between;font-size:clamp(.72rem,1.3vw,.82rem);padding:.22rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
 
-/* ─── Footer ─── */
-.footer{text-align:center;padding:1.5rem 1rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--border);margin-top:1.5rem}
+.hrow{display:flex;align-items:center;gap:.5rem;padding:.35rem 0;border-bottom:1px solid rgba(42,45,58,.4)}
+.hbar{height:18px;border-radius:3px;min-width:3px;transition:width .4s}
+.hlbl{font-size:clamp(.7rem,1.3vw,.8rem);min-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hval{font-size:clamp(.7rem,1.3vw,.8rem);color:var(--muted);margin-left:auto;white-space:nowrap}
+
+.fcard{padding:.85rem;border-radius:8px}
+.fcard-icon{font-size:1.4rem;margin-bottom:.25rem}
+.fcard-title{font-weight:600;margin-bottom:.25rem;font-size:clamp(.8rem,1.4vw,.88rem)}
+.fcard-desc{font-size:clamp(.72rem,1.3vw,.82rem);color:var(--muted);line-height:1.6}
+
+.scard{padding:.85rem;border-radius:8px}
+.scard-title{font-weight:600;margin-bottom:.25rem;font-size:clamp(.8rem,1.4vw,.88rem)}
+.scard-desc{font-size:clamp(.72rem,1.3vw,.82rem);color:var(--muted);line-height:1.6}
+
+.tbar{display:flex;height:26px;border-radius:6px;overflow:hidden;margin:.3rem 0}
+.tbar div{display:flex;align-items:center;justify-content:center;font-size:clamp(.58rem,1.1vw,.68rem);font-weight:600;color:#fff}
+
+.footer{text-align:center;padding:1.5rem 1rem;color:var(--muted);font-size:.72rem;border-top:1px solid var(--border);margin-top:1.5rem}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <h1>Donald J. Trump 财务交易分析</h1>
-  <p>OGE Form 278-T | 2026年5月8日提交 | 交易期间: 2026年1月 – 3月</p>
+  <button id="langToggle" onclick="toggleLang()">EN</button>
+  <h1 data-i18n="header_title"></h1>
+  <p data-i18n="header_sub"></p>
 </div>
 
 <div class="container">
 
-<!-- ═══════ KPI ═══════ -->
+<!-- KPI -->
 <div class="kpi-grid">
-  <div class="kpi-card kpi-blue"><div class="kpi-label">总交易笔数</div><div class="kpi-value">3,642</div><div class="kpi-sub">113页申报</div></div>
-  <div class="kpi-card kpi-red"><div class="kpi-label">出售 Sale</div><div class="kpi-value">2,574</div><div class="kpi-sub">70.7%</div></div>
-  <div class="kpi-card kpi-green"><div class="kpi-label">购买 Purchase</div><div class="kpi-value">1,068</div><div class="kpi-sub">29.3%</div></div>
-  <div class="kpi-card kpi-purple"><div class="kpi-label">涉及公司</div><div class="kpi-value">800+</div><div class="kpi-sub">全行业覆盖</div></div>
-  <div class="kpi-card kpi-yellow"><div class="kpi-label">最大单笔</div><div class="kpi-value">$25M</div><div class="kpi-sub">META / AMZN / MSFT</div></div>
-  <div class="kpi-card kpi-cyan"><div class="kpi-label">UNSOLICITED</div><div class="kpi-value">95%+</div><div class="kpi-sub">非主动推荐</div></div>
-  <div class="kpi-card kpi-orange"><div class="kpi-label">预估总额</div><div class="kpi-value">~$1.8B</div><div class="kpi-sub">基于区间中位数</div></div>
+  <div class="kpi-card kpi-blue"><div class="kpi-label" data-i18n="kpi_total"></div><div class="kpi-value">3,642</div><div class="kpi-sub" data-i18n="kpi_total_sub"></div></div>
+  <div class="kpi-card kpi-red"><div class="kpi-label" data-i18n="kpi_sell"></div><div class="kpi-value">2,574</div><div class="kpi-sub" data-i18n="kpi_sell_sub"></div></div>
+  <div class="kpi-card kpi-green"><div class="kpi-label" data-i18n="kpi_buy"></div><div class="kpi-value">1,068</div><div class="kpi-sub" data-i18n="kpi_buy_sub"></div></div>
+  <div class="kpi-card kpi-purple"><div class="kpi-label" data-i18n="kpi_companies"></div><div class="kpi-value">800+</div><div class="kpi-sub" data-i18n="kpi_companies_sub"></div></div>
+  <div class="kpi-card kpi-yellow"><div class="kpi-label" data-i18n="kpi_max"></div><div class="kpi-value">$25M</div><div class="kpi-sub" data-i18n="kpi_max_sub"></div></div>
+  <div class="kpi-card kpi-cyan"><div class="kpi-label" data-i18n="kpi_unsolicited"></div><div class="kpi-value">95%+</div><div class="kpi-sub" data-i18n="kpi_unsolicited_sub"></div></div>
+  <div class="kpi-card kpi-orange"><div class="kpi-label" data-i18n="kpi_totalval"></div><div class="kpi-value">~$1.8B</div><div class="kpi-sub" data-i18n="kpi_totalval_sub"></div></div>
 </div>
 
-<!-- ═══════ 核心发现 ═══════ -->
+<!-- Insights -->
 <div class="section">
-  <h2>核心发现</h2>
-  <div class="ins"><strong>1. 大规模清仓式出售：</strong>出售 2,574 笔远超购买 1,068 笔。预估出售总额 ~$17.7 亿，购买总额仅 ~$3,500 万。本质上是一次系统性资产清算而非调仓。</div>
-  <div class="ins"><strong>2. 科技巨头集中减持：</strong>Meta、Amazon、Microsoft 均出现 $5M–$25M 区间的超大额出售，三家预估合计 >$300M。NVIDIA、Broadcom、Oracle、Adobe 等也有大量减持。</div>
-  <div class="ins"><strong>3. 指数化分散持仓：</strong>800+ 家公司横跨全部行业板块，持仓模式类似标普500指数基金，非个人主动选股。95%+ 交易标注 UNSOLICITED，说明由受托人独立执行。</div>
-  <div class="ins"><strong>4. 就职合规处置：</strong>1月初就职前集中中小额出售，2-3月密集清理大额持仓，与联邦高级官员利益冲突回避要求一致。</div>
+  <h2 data-i18n="insights_title"></h2>
+  <div class="ins" data-i18n="ins1"></div>
+  <div class="ins" data-i18n="ins2"></div>
+  <div class="ins" data-i18n="ins3"></div>
+  <div class="ins" data-i18n="ins4"></div>
 </div>
 
-<!-- ═══════ 买卖对比总览 ═══════ -->
+<!-- Hero -->
 <div class="section">
-  <h2>出售 vs 购买 总览</h2>
   <div class="hero-grid">
     <div class="hero-card sell">
-      <div class="hero-label">出售 SALE</div>
-      <div class="hero-num">2,574 笔</div>
-      <div class="hero-stat"><span>预估总额</span><span style="color:var(--red)">~$1,765M</span></div>
-      <div class="hero-stat"><span>平均单笔</span><span>~$686K</span></div>
-      <div class="hero-stat"><span>金额范围</span><span>$1K – $25M</span></div>
-      <div class="hero-stat"><span>大额交易(>$100K)</span><span>~1,136 笔 (44%)</span></div>
-      <div class="hero-stat"><span>UNSOLICITED</span><span>~97%</span></div>
-      <div class="hero-stat"><span>涉及公司</span><span>600+</span></div>
+      <div class="hero-label" data-i18n="hero_sell_title"></div>
+      <div class="hero-num">2,574</div>
+      <div class="hero-stat"><span data-i18n="hero_est"></span><span style="color:var(--red)">~$1,765M</span></div>
+      <div class="hero-stat"><span data-i18n="hero_avg"></span><span>~$686K</span></div>
+      <div class="hero-stat"><span data-i18n="hero_range"></span><span>$1K – $25M</span></div>
+      <div class="hero-stat"><span data-i18n="hero_large"></span><span>~1,136 (44%)</span></div>
+      <div class="hero-stat"><span data-i18n="hero_unsol"></span><span>~97%</span></div>
+      <div class="hero-stat"><span data-i18n="hero_cos"></span><span>600+</span></div>
     </div>
     <div class="hero-card buy">
-      <div class="hero-label">购买 PURCHASE</div>
-      <div class="hero-num">1,068 笔</div>
-      <div class="hero-stat"><span>预估总额</span><span style="color:var(--green)">~$35M</span></div>
-      <div class="hero-stat"><span>平均单笔</span><span>~$33K</span></div>
-      <div class="hero-stat"><span>金额范围</span><span>$1K – $100K</span></div>
-      <div class="hero-stat"><span>大额交易(>$100K)</span><span>~16 笔 (1.5%)</span></div>
-      <div class="hero-stat"><span>UNSOLICITED</span><span>~92%</span></div>
-      <div class="hero-stat"><span>涉及公司</span><span>400+</span></div>
+      <div class="hero-label" data-i18n="hero_buy_title"></div>
+      <div class="hero-num">1,068</div>
+      <div class="hero-stat"><span data-i18n="hero_est"></span><span style="color:var(--green)">~$35M</span></div>
+      <div class="hero-stat"><span data-i18n="hero_avg"></span><span>~$33K</span></div>
+      <div class="hero-stat"><span data-i18n="hero_range"></span><span>$1K – $100K</span></div>
+      <div class="hero-stat"><span data-i18n="hero_large"></span><span>~16 (1.5%)</span></div>
+      <div class="hero-stat"><span data-i18n="hero_unsol"></span><span>~92%</span></div>
+      <div class="hero-stat"><span data-i18n="hero_cos"></span><span>400+</span></div>
     </div>
   </div>
-  <div class="ins ins-y"><strong>买入/卖出比 = 1:2.4（笔数）| 1:50（金额）：</strong>出售金额是购买金额的 50 倍，属于净减持退出，不是调仓换股。</div>
+  <div class="ins ins-y" data-i18n="hero_insight"></div>
 </div>
 
-<!-- ═══════ 交易类型饼图 + 买卖对比柱状图 ═══════ -->
+<!-- Structure -->
 <div class="section">
-  <h2>交易结构分析</h2>
+  <h2 data-i18n="struct_title"></h2>
   <div class="g2">
     <div class="ch ch-md"><canvas id="c_type"></canvas></div>
     <div class="ch ch-md"><canvas id="c_buySell"></canvas></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ═══════ 售出 SALE 详细分析 ═══════ -->
-<!-- ═══════════════════════════════════════════ -->
+<!-- Sell section -->
 <div class="section" style="border-color:rgba(239,68,68,.3)">
-  <h2 style="color:var(--red)">🔴 售出交易 (Sale) 详细分析</h2>
-
+  <h2 data-i18n="sell_title" style="color:var(--red)"></h2>
   <div class="g2">
     <div class="ch ch-md"><canvas id="c_sellAmt"></canvas></div>
     <div class="ch ch-md"><canvas id="c_sellSector"></canvas></div>
   </div>
-
-  <h3>售出金额分布</h3>
+  <h3 data-i18n="sell_dist_title"></h3>
   <div class="tw">
     <table class="dt">
-      <thead><tr><th>金额区间</th><th class="n">笔数</th><th class="n">占比</th><th class="n">预估金额</th><th class="n">金额占比</th></tr></thead>
+      <thead><tr><th data-i18n="th_amount"></th><th class="n" data-i18n="th_count"></th><th class="n" data-i18n="th_pct"></th><th class="n" data-i18n="th_est"></th><th class="n" data-i18n="th_valpct"></th></tr></thead>
       <tbody>
         <tr><td>$1,001 – $15,000</td><td class="n">656</td><td class="n">25.5%</td><td class="n">$5.5M</td><td class="n">0.3%</td></tr>
         <tr><td>$15,001 – $50,000</td><td class="n">456</td><td class="n">17.7%</td><td class="n">$15.2M</td><td class="n">0.9%</td></tr>
@@ -194,326 +174,322 @@ table.dt .n{text-align:right;font-variant-numeric:tabular-nums}
         <tr><td>$500,001 – $1,000,000</td><td class="n">146</td><td class="n">5.7%</td><td class="n">$109.5M</td><td class="n">6.2%</td></tr>
         <tr><td>$1,000,001 – $5,000,000</td><td class="n">437</td><td class="n">17.0%</td><td class="n">$1,311M</td><td class="n">74.3%</td></tr>
         <tr><td>$5,000,001 – $25,000,000</td><td class="n">11</td><td class="n">0.4%</td><td class="n">$165M</td><td class="n">9.3%</td></tr>
-        <tr style="background:rgba(239,68,68,.08);font-weight:600"><td>合计</td><td class="n">2,574</td><td class="n">100%</td><td class="n">~$1,767M</td><td class="n">100%</td></tr>
+        <tr style="background:rgba(239,68,68,.08);font-weight:600"><td data-i18n="td_total"></td><td class="n">2,574</td><td class="n">100%</td><td class="n">~$1,767M</td><td class="n">100%</td></tr>
       </tbody>
     </table>
   </div>
+  <div class="ins ins-r" data-i18n="sell_insight"></div>
 
-  <div class="ins ins-r"><strong>售出关键洞察：</strong>仅 17.4% 的笔数（$1M+ 区间）贡献了 <strong>83.6% 的出售总额</strong>。$5M–$25M 区间虽然只有 11 笔（0.4%），但金额占比高达 9.3%，全部来自 Meta、Amazon、Microsoft 三家科技巨头。</div>
-
-  <h3>售出 — 各行业分布</h3>
+  <h3 data-i18n="sell_sector_title"></h3>
   <div class="tw">
     <table class="dt">
-      <thead><tr><th>行业</th><th class="n">售出笔数</th><th class="n">预估金额</th><th>代表标的</th></tr></thead>
+      <thead><tr><th data-i18n="th_sector"></th><th class="n" data-i18n="th_sellcount"></th><th class="n" data-i18n="th_est"></th><th data-i18n="th_rep"></th></tr></thead>
       <tbody>
-        <tr><td>科技</td><td class="n">735</td><td class="n">~$620M</td><td>Microsoft, Oracle, Adobe, Intel, Salesforce, CrowdStrike</td></tr>
-        <tr><td>通信/互联网</td><td class="n">280</td><td class="n">~$340M</td><td><strong>Meta $150M+</strong>, Netflix, Alphabet, Verizon, AT&T</td></tr>
-        <tr><td>消费/零售</td><td class="n">266</td><td class="n">~$130M</td><td>Walmart, Costco, McDonald's, Nike, Disney, Home Depot</td></tr>
-        <tr><td>金融</td><td class="n">375</td><td class="n">~$260M</td><td>JPMorgan, Goldman Sachs, BofA, Citigroup, BlackRock</td></tr>
-        <tr><td>医疗健康</td><td class="n">278</td><td class="n">~$160M</td><td>UnitedHealth, Pfizer, AbbVie, Abbott, J&J, Eli Lilly</td></tr>
-        <tr><td>能源</td><td class="n">185</td><td class="n">~$120M</td><td>Chevron, ConocoPhillips, Exxon, NextEra</td></tr>
-        <tr><td>工业</td><td class="n">143</td><td class="n">~$70M</td><td>Caterpillar, Deere, Honeywell, GE Aerospace, RTX</td></tr>
-        <tr><td>ETF/基金</td><td class="n">65</td><td class="n">~$40M</td><td>Vanguard S&P 500, iShares S&P 500, SPDR</td></tr>
-        <tr><td>半导体</td><td class="n">98</td><td class="n">~$85M</td><td>NVIDIA, Broadcom, AMD, Intel, Marvell</td></tr>
-        <tr><td>其他</td><td class="n">149</td><td class="n">~$45M</td><td>REITs、保险、材料、公用事业等</td></tr>
+        <tr><td>Tech</td><td class="n">735</td><td class="n">~$620M</td><td>Microsoft, Oracle, Adobe, Intel, Salesforce</td></tr>
+        <tr><td>Comm/Internet</td><td class="n">280</td><td class="n">~$340M</td><td>Meta $150M+, Netflix, Alphabet, Verizon</td></tr>
+        <tr><td>Consumer</td><td class="n">266</td><td class="n">~$130M</td><td>Walmart, Costco, McDonald's, Nike, Disney</td></tr>
+        <tr><td>Finance</td><td class="n">375</td><td class="n">~$260M</td><td>JPMorgan, Goldman Sachs, BofA, Citigroup</td></tr>
+        <tr><td>Healthcare</td><td class="n">278</td><td class="n">~$160M</td><td>UnitedHealth, Pfizer, AbbVie, Abbott, J&J</td></tr>
+        <tr><td>Energy</td><td class="n">185</td><td class="n">~$120M</td><td>Chevron, ConocoPhillips, Exxon, NextEra</td></tr>
+        <tr><td>Industrial</td><td class="n">143</td><td class="n">~$70M</td><td>Caterpillar, Deere, Honeywell, GE, RTX</td></tr>
+        <tr><td>ETF/Funds</td><td class="n">65</td><td class="n">~$40M</td><td>Vanguard S&P 500, iShares, SPDR</td></tr>
+        <tr><td>Semiconductor</td><td class="n">98</td><td class="n">~$85M</td><td>NVIDIA, Broadcom, AMD, Marvell</td></tr>
+        <tr><td>Other</td><td class="n">149</td><td class="n">~$45M</td><td>REITs, Insurance, Materials, Utilities</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3>售出 — 最大额标的 TOP 20</h3>
+  <h3 data-i18n="sell_top_title"></h3>
   <div id="sellTop"></div>
 
-  <h3>售出 — 交易方式</h3>
+  <h3 data-i18n="sell_method_title"></h3>
   <div class="g2">
     <div class="ch ch-sm"><canvas id="c_sellMethod"></canvas></div>
-    <div>
-      <div class="ins ins-r"><strong>售出策略解读：</strong><br>
-        • 97% 为 UNSOLICITED — 受托人/经纪人按预设规则独立执行<br>
-        • 大额出售集中在2–3月，与季度末再平衡吻合<br>
-        • 科技+通信占比 > 37%，反映此前科技股权重过高<br>
-        • 小额出售（<$50K）可能是零散持仓的尾部清理
-      </div>
-    </div>
+    <div><div class="ins ins-r" data-i18n="sell_strategy"></div></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════ -->
-<!-- ═══════ 购买 PURCHASE 详细分析 ═══════ -->
-<!-- ═══════════════════════════════════════════ -->
+<!-- Buy section -->
 <div class="section" style="border-color:rgba(34,197,94,.3)">
-  <h2 style="color:var(--green)">🟢 购买交易 (Purchase) 详细分析</h2>
-
+  <h2 data-i18n="buy_title" style="color:var(--green)"></h2>
   <div class="g2">
     <div class="ch ch-md"><canvas id="c_buyAmt"></canvas></div>
     <div class="ch ch-md"><canvas id="c_buySector"></canvas></div>
   </div>
-
-  <h3>购买金额分布</h3>
+  <h3 data-i18n="buy_dist_title"></h3>
   <div class="tw">
     <table class="dt">
-      <thead><tr><th>金额区间</th><th class="n">笔数</th><th class="n">占比</th><th class="n">预估金额</th><th class="n">金额占比</th></tr></thead>
+      <thead><tr><th data-i18n="th_amount"></th><th class="n" data-i18n="th_count"></th><th class="n" data-i18n="th_pct"></th><th class="n" data-i18n="th_est"></th><th class="n" data-i18n="th_valpct"></th></tr></thead>
       <tbody>
         <tr><td>$1,001 – $15,000</td><td class="n">412</td><td class="n">38.6%</td><td class="n">$3.3M</td><td class="n">9.4%</td></tr>
         <tr><td>$15,001 – $50,000</td><td class="n">612</td><td class="n">57.3%</td><td class="n">$20.2M</td><td class="n">57.7%</td></tr>
         <tr><td>$50,001 – $100,000</td><td class="n">28</td><td class="n">2.6%</td><td class="n">$2.1M</td><td class="n">6.0%</td></tr>
         <tr><td>$100,001 – $250,000</td><td class="n">12</td><td class="n">1.1%</td><td class="n">$2.1M</td><td class="n">6.0%</td></tr>
         <tr><td>$250,001 – $500,000</td><td class="n">4</td><td class="n">0.4%</td><td class="n">$1.5M</td><td class="n">4.3%</td></tr>
-        <tr><td>$50,001 – $100,000 (AMD)</td><td class="n">1</td><td class="n">0.1%</td><td class="n">$0.08M</td><td class="n">0.2%</td></tr>
-        <tr style="background:rgba(34,197,94,.08);font-weight:600"><td>合计</td><td class="n">1,068</td><td class="n">100%</td><td class="n">~$35M</td><td class="n">100%</td></tr>
+        <tr style="background:rgba(34,197,94,.08);font-weight:600"><td data-i18n="td_total"></td><td class="n">1,068</td><td class="n">100%</td><td class="n">~$35M</td><td class="n">100%</td></tr>
       </tbody>
     </table>
   </div>
+  <div class="ins ins-g" data-i18n="buy_insight"></div>
 
-  <div class="ins ins-g"><strong>购买关键洞察：</strong>95.9% 的购买集中在 $50K 以下区间。没有单笔超过 $100K 的新建仓。这种均匀、小额的买入模式高度符合<strong>定期定额再投资</strong>或<strong>信托基金自动再平衡</strong>的特征，而非主动选股建仓。</div>
-
-  <h3>购买 — 各行业分布</h3>
+  <h3 data-i18n="buy_sector_title"></h3>
   <div class="tw">
     <table class="dt">
-      <thead><tr><th>行业</th><th class="n">购买笔数</th><th class="n">预估金额</th><th>代表标的</th></tr></thead>
+      <thead><tr><th data-i18n="th_sector"></th><th class="n">Buys</th><th class="n" data-i18n="th_est"></th><th data-i18n="th_rep"></th></tr></thead>
       <tbody>
-        <tr><td>科技</td><td class="n">245</td><td class="n">~$8.5M</td><td>Microsoft, Oracle, Adobe, Intel, Salesforce, Super Micro</td></tr>
-        <tr><td>金融</td><td class="n">145</td><td class="n">~$4.8M</td><td>Citigroup, Goldman Sachs, Bank of America, Morgan Stanley</td></tr>
-        <tr><td>医疗健康</td><td class="n">132</td><td class="n">~$4.2M</td><td>Pfizer, AbbVie, Abbott, Gilead, Amgen, Intuitive Surgical</td></tr>
-        <tr><td>消费/零售</td><td class="n">114</td><td class="n">~$3.8M</td><td>Cheers, Starbucks, Nike, Home Depot, Chipotle</td></tr>
-        <tr><td>能源</td><td class="n">65</td><td class="n">~$2.2M</td><td>Chevron, ConocoPhillips, Devon Energy, NRG Energy</td></tr>
-        <tr><td>通信</td><td class="n">55</td><td class="n">~$1.8M</td><td>Meta, Netflix, Verizon, AT&T, Charter</td></tr>
-        <tr><td>半导体</td><td class="n">42</td><td class="n">~$1.5M</td><td>AMD (最大单笔), NVIDIA, Marvell, Monolithic Power</td></tr>
-        <tr><td>工业/其他</td><td class="n">270</td><td class="n">~$8.2M</td><td>Caterpillar, Deere, Honeywell, REITs, 保险等</td></tr>
+        <tr><td>Tech</td><td class="n">245</td><td class="n">~$8.5M</td><td>Microsoft, Oracle, Adobe, Intel, Super Micro</td></tr>
+        <tr><td>Finance</td><td class="n">145</td><td class="n">~$4.8M</td><td>Citigroup, Goldman Sachs, BofA, Morgan Stanley</td></tr>
+        <tr><td>Healthcare</td><td class="n">132</td><td class="n">~$4.2M</td><td>Pfizer, AbbVie, Abbott, Gilead, Amgen</td></tr>
+        <tr><td>Consumer</td><td class="n">114</td><td class="n">~$3.8M</td><td>Chevron, Starbucks, Nike, Chipotle, Home Depot</td></tr>
+        <tr><td>Energy</td><td class="n">65</td><td class="n">~$2.2M</td><td>Chevron, Devon Energy, NRG Energy</td></tr>
+        <tr><td>Comm</td><td class="n">55</td><td class="n">~$1.8M</td><td>Meta, Netflix, Verizon, AT&T, Charter</td></tr>
+        <tr><td>Semiconductor</td><td class="n">42</td><td class="n">~$1.5M</td><td>AMD, NVIDIA, Marvell, Monolithic Power</td></tr>
+        <tr><td>Other</td><td class="n">270</td><td class="n">~$8.2M</td><td>Industrial, REITs, Insurance, Materials</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3>购买 — 最频繁标的 TOP 20</h3>
+  <h3 data-i18n="buy_top_title"></h3>
   <div id="buyTop"></div>
 
-  <h3>购买 — 交易方式</h3>
+  <h3 data-i18n="buy_method_title"></h3>
   <div class="g2">
     <div class="ch ch-sm"><canvas id="c_buyMethod"></canvas></div>
-    <div>
-      <div class="ins ins-g"><strong>购买策略解读：</strong><br>
-        • 92% 为 UNSOLICITED — 非申报人主动决策<br>
-        • 几乎全部为 $50K 以下小额 — 符合定期定额策略<br>
-        • 买入标的与卖出标的高度重叠 — 同一公司既卖又买<br>
-        • 可能是 ETF/指数基金的自动再平衡，或盲信信托的分散化操作<br>
-        • 买入总额仅 $35M — 相对于 $1.77B 售出，净撤出 ~$17.3 亿
-      </div>
-    </div>
+    <div><div class="ins ins-g" data-i18n="buy_strategy"></div></div>
   </div>
 </div>
 
-<!-- ═══════ 同标的双向交易分析 ═══════ -->
+<!-- Dual trades -->
 <div class="section">
-  <h2>同标的双向交易（既买又卖）</h2>
-  <p style="color:var(--muted);font-size:clamp(.75rem,1.4vw,.85rem);margin-bottom:.75rem">部分公司同时出现在买入和卖出清单中，这在盲信信托/指数化管理中是典型现象——受托人可能在不同时间点分别执行买入和卖出操作。</p>
+  <h2 data-i18n="dual_title"></h2>
+  <p style="color:var(--muted);font-size:clamp(.72rem,1.3vw,.82rem);margin-bottom:.5rem" data-i18n="dual_desc"></p>
   <div class="tw scroll-y">
     <table class="dt" id="dualTable">
-      <thead><tr><th>公司</th><th class="n">总笔数</th><th class="n">出售</th><th class="n">购买</th><th class="n">净方向</th><th>行业</th></tr></thead>
+      <thead><tr><th data-i18n="th_company"></th><th class="n" data-i18n="th_total"></th><th class="n" data-i18n="th_sell"></th><th class="n" data-i18n="th_buy"></th><th class="n" data-i18n="th_net"></th><th data-i18n="th_ind"></th></tr></thead>
       <tbody></tbody>
     </table>
   </div>
-  <div class="ins"><strong>规律：</strong>几乎所有双向交易标的的出售笔数都远超购买笔数（平均 3:1），说明即使在买入方向上也有零散操作，但总体是净卖出。这进一步印证了系统性清算的判断。</div>
+  <div class="ins" data-i18n="dual_insight"></div>
 </div>
 
-<!-- ═══════ 时间线 ═══════ -->
+<!-- Timeline -->
 <div class="section">
-  <h2>时间线分析</h2>
+  <h2 data-i18n="timeline_title"></h2>
   <div class="ch ch-lg"><canvas id="c_timeline"></canvas></div>
-
   <div class="g3" style="margin-top:1rem">
-    <div style="text-align:center;padding:.75rem;background:rgba(59,130,246,.08);border-radius:8px">
-      <div style="font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;color:var(--accent)">1/6 – 1/20</div>
-      <div style="font-size:clamp(.7rem,1.3vw,.82rem);color:var(--muted);margin-top:.2rem">就职前清理期</div>
-      <div style="font-size:clamp(.65rem,1.2vw,.75rem);color:var(--muted)">~300笔 | 中小额出售为主</div>
+    <div style="text-align:center;padding:.7rem;background:rgba(59,130,246,.08);border-radius:8px">
+      <div style="font-size:clamp(1.1rem,2.8vw,1.6rem);font-weight:700;color:var(--accent)">1/6 – 1/20</div>
+      <div style="font-size:clamp(.68rem,1.2vw,.8rem);color:var(--muted)" data-i18n="timeline_ph1"></div>
+      <div style="font-size:clamp(.62rem,1.1vw,.72rem);color:var(--muted)" data-i18n="timeline_ph1_sub"></div>
     </div>
-    <div style="text-align:center;padding:.75rem;background:rgba(168,85,247,.08);border-radius:8px">
-      <div style="font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;color:var(--purple)">2/1 – 2/28</div>
-      <div style="font-size:clamp(.7rem,1.3vw,.82rem);color:var(--muted);margin-top:.2rem">密集处置期</div>
-      <div style="font-size:clamp(.65rem,1.2vw,.75rem);color:var(--muted)">~1,350笔 | 大额出售集中出现</div>
+    <div style="text-align:center;padding:.7rem;background:rgba(168,85,247,.08);border-radius:8px">
+      <div style="font-size:clamp(1.1rem,2.8vw,1.6rem);font-weight:700;color:var(--purple)">2/1 – 2/28</div>
+      <div style="font-size:clamp(.68rem,1.2vw,.8rem);color:var(--muted)" data-i18n="timeline_ph2"></div>
+      <div style="font-size:clamp(.62rem,1.1vw,.72rem);color:var(--muted)" data-i18n="timeline_ph2_sub"></div>
     </div>
-    <div style="text-align:center;padding:.75rem;background:rgba(249,115,22,.08);border-radius:8px">
-      <div style="font-size:clamp(1.2rem,3vw,1.8rem);font-weight:700;color:var(--orange)">3/1 – 3/31</div>
-      <div style="font-size:clamp(.7rem,1.3vw,.82rem);color:var(--muted);margin-top:.2rem">季度末冲刺期</div>
-      <div style="font-size:clamp(.65rem,1.2vw,.75rem);color:var(--muted)">~1,440笔 | 3/18 单日峰值</div>
+    <div style="text-align:center;padding:.7rem;background:rgba(249,115,22,.08);border-radius:8px">
+      <div style="font-size:clamp(1.1rem,2.8vw,1.6rem);font-weight:700;color:var(--orange)">3/1 – 3/31</div>
+      <div style="font-size:clamp(.68rem,1.2vw,.8rem);color:var(--muted)" data-i18n="timeline_ph3"></div>
+      <div style="font-size:clamp(.62rem,1.1vw,.72rem);color:var(--muted)" data-i18n="timeline_ph3_sub"></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════ 重复交易标的 ═══════ -->
+<!-- High frequency -->
 <div class="section">
-  <h2>高频交易标的 TOP 10</h2>
-  <p style="color:var(--muted);font-size:clamp(.75rem,1.4vw,.85rem);margin-bottom:.5rem">同一公司出现多次买卖交易</p>
+  <h2 data-i18n="hf_title"></h2>
+  <p style="color:var(--muted);font-size:clamp(.72rem,1.3vw,.82rem);margin-bottom:.5rem" data-i18n="hf_desc"></p>
   <div class="tw">
     <table class="dt">
-      <thead><tr><th>公司</th><th class="n">总次数</th><th><span class="tag tag-s">出售</span></th><th><span class="tag tag-p">购买</span></th><th>行业</th></tr></thead>
+      <thead><tr><th data-i18n="th_company"></th><th class="n" data-i18n="th_total"></th><th><span class="tag tag-s" data-i18n="tag_sale"></span></th><th><span class="tag tag-p" data-i18n="tag_purchase"></span></th><th data-i18n="th_ind"></th></tr></thead>
       <tbody>
-        <tr><td>Microsoft</td><td class="n">18</td><td class="n">12</td><td class="n">6</td><td>科技</td></tr>
-        <tr><td>Meta Platforms</td><td class="n">15</td><td class="n">11</td><td class="n">4</td><td>通信</td></tr>
-        <tr><td>Amazon</td><td class="n">14</td><td class="n">10</td><td class="n">4</td><td>消费/科技</td></tr>
-        <tr><td>Citigroup</td><td class="n">12</td><td class="n">8</td><td class="n">4</td><td>金融</td></tr>
-        <tr><td>Oracle</td><td class="n">11</td><td class="n">7</td><td class="n">4</td><td>科技</td></tr>
-        <tr><td>Adobe</td><td class="n">10</td><td class="n">7</td><td class="n">3</td><td>科技</td></tr>
-        <tr><td>Chevron</td><td class="n">10</td><td class="n">7</td><td class="n">3</td><td>能源</td></tr>
-        <tr><td>NVIDIA</td><td class="n">9</td><td class="n">7</td><td class="n">2</td><td>半导体</td></tr>
-        <tr><td>Goldman Sachs</td><td class="n">9</td><td class="n">6</td><td class="n">3</td><td>金融</td></tr>
-        <tr><td>Bank of America</td><td class="n">9</td><td class="n">6</td><td class="n">3</td><td>金融</td></tr>
+        <tr><td>Microsoft</td><td class="n">18</td><td class="n">12</td><td class="n">6</td><td>Tech</td></tr>
+        <tr><td>Meta Platforms</td><td class="n">15</td><td class="n">11</td><td class="n">4</td><td>Comm</td></tr>
+        <tr><td>Amazon</td><td class="n">14</td><td class="n">10</td><td class="n">4</td><td>Consumer</td></tr>
+        <tr><td>Citigroup</td><td class="n">12</td><td class="n">8</td><td class="n">4</td><td>Finance</td></tr>
+        <tr><td>Oracle</td><td class="n">11</td><td class="n">7</td><td class="n">4</td><td>Tech</td></tr>
+        <tr><td>Adobe</td><td class="n">10</td><td class="n">7</td><td class="n">3</td><td>Tech</td></tr>
+        <tr><td>Chevron</td><td class="n">10</td><td class="n">7</td><td class="n">3</td><td>Energy</td></tr>
+        <tr><td>NVIDIA</td><td class="n">9</td><td class="n">7</td><td class="n">2</td><td>Semi</td></tr>
+        <tr><td>Goldman Sachs</td><td class="n">9</td><td class="n">6</td><td class="n">3</td><td>Finance</td></tr>
+        <tr><td>Bank of America</td><td class="n">9</td><td class="n">6</td><td class="n">3</td><td>Finance</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- ═══════ 策略模式 ═══════ -->
+<!-- Strategy -->
 <div class="section">
-  <h2>交易策略模式分析</h2>
+  <h2 data-i18n="strat_title"></h2>
   <div class="g3">
     <div class="fcard" style="background:rgba(34,197,94,.08)">
       <div class="fcard-icon">📊</div>
-      <div class="fcard-title" style="color:var(--green)">被动指数化管理</div>
-      <div class="fcard-desc">持仓覆盖标普500几乎所有成分股，呈现指数基金式的广泛分散特征。个人不可能主动研究并持有800+家公司。</div>
+      <div class="fcard-title" style="color:var(--green)" data-i18n="strat1_title"></div>
+      <div class="fcard-desc" data-i18n="strat1_desc"></div>
     </div>
     <div class="fcard" style="background:rgba(168,85,247,.08)">
       <div class="fcard-icon">🔒</div>
-      <div class="fcard-title" style="color:var(--purple)">盲信委托 Blind Trust</div>
-      <div class="fcard-desc">95%+ 交易标注 UNSOLICITED，投资决策由受托人独立执行，申报人不知晓具体买卖操作。符合联邦利益冲突回避标准。</div>
+      <div class="fcard-title" style="color:var(--purple)" data-i18n="strat2_title"></div>
+      <div class="fcard-desc" data-i18n="strat2_desc"></div>
     </div>
     <div class="fcard" style="background:rgba(249,115,22,.08)">
       <div class="fcard-icon">⚖️</div>
-      <div class="fcard-title" style="color:var(--orange)">合规性资产处置</div>
-      <div class="fcard-desc">就职前后大规模出售直接持股，符合联邦道德规范要求。出售金额远大于买入，属于净退出而非调仓。</div>
+      <div class="fcard-title" style="color:var(--orange)" data-i18n="strat3_title"></div>
+      <div class="fcard-desc" data-i18n="strat3_desc"></div>
     </div>
   </div>
 </div>
 
-<!-- ═══════ Mega Cap 专项 ═══════ -->
+<!-- Mega Cap -->
 <div class="section">
-  <h2>Mega Cap（超级大盘股）专项</h2>
-  <p style="color:var(--muted);font-size:clamp(.75rem,1.4vw,.85rem);margin-bottom:.75rem">市值超 $5000亿的公司 — 投资组合中权重最大的标的</p>
+  <h2 data-i18n="mega_title"></h2>
+  <p style="color:var(--muted);font-size:clamp(.72rem,1.3vw,.82rem);margin-bottom:.5rem" data-i18n="mega_desc"></p>
   <div class="tw scroll-y">
     <table class="dt">
-      <thead><tr><th>公司</th><th class="n">交易次数</th><th class="n">出售</th><th class="n">购买</th><th class="n">最大出售</th><th>行业</th></tr></thead>
+      <thead><tr><th data-i18n="th_company"></th><th class="n" data-i18n="th_total"></th><th class="n" data-i18n="th_sell"></th><th class="n" data-i18n="th_buy"></th><th class="n" data-i18n="th_maxsell"></th><th data-i18n="th_ind"></th></tr></thead>
       <tbody>
-        <tr><td><strong>Meta Platforms</strong></td><td class="n">15</td><td class="n">11</td><td class="n">4</td><td class="n">$5M–$25M</td><td>通信</td></tr>
-        <tr><td><strong>Microsoft</strong></td><td class="n">18</td><td class="n">12</td><td class="n">6</td><td class="n">$5M–$25M</td><td>科技</td></tr>
-        <tr><td><strong>Amazon</strong></td><td class="n">14</td><td class="n">10</td><td class="n">4</td><td class="n">$5M–$25M</td><td>消费</td></tr>
-        <tr><td>Apple</td><td class="n">6</td><td class="n">5</td><td class="n">1</td><td class="n">$100K–$250K</td><td>科技</td></tr>
-        <tr><td>NVIDIA</td><td class="n">9</td><td class="n">7</td><td class="n">2</td><td class="n">$100K–$250K</td><td>半导体</td></tr>
-        <tr><td>Alphabet</td><td class="n">8</td><td class="n">6</td><td class="n">2</td><td class="n">$100K–$250K</td><td>通信</td></tr>
-        <tr><td>Broadcom</td><td class="n">7</td><td class="n">5</td><td class="n">2</td><td class="n">$250K–$500K</td><td>半导体</td></tr>
-        <tr><td>Oracle</td><td class="n">11</td><td class="n">7</td><td class="n">4</td><td class="n">$100K–$250K</td><td>科技</td></tr>
-        <tr><td>Eli Lilly</td><td class="n">5</td><td class="n">4</td><td class="n">1</td><td class="n">$100K–$250K</td><td>制药</td></tr>
-        <tr><td>UnitedHealth</td><td class="n">8</td><td class="n">6</td><td class="n">2</td><td class="n">$100K–$250K</td><td>医疗</td></tr>
-        <tr><td>JPMorgan</td><td class="n">8</td><td class="n">6</td><td class="n">2</td><td class="n">$100K–$250K</td><td>金融</td></tr>
+        <tr><td><strong>Meta Platforms</strong></td><td class="n">15</td><td class="n">11</td><td class="n">4</td><td class="n">$5M–$25M</td><td>Comm</td></tr>
+        <tr><td><strong>Microsoft</strong></td><td class="n">18</td><td class="n">12</td><td class="n">6</td><td class="n">$5M–$25M</td><td>Tech</td></tr>
+        <tr><td><strong>Amazon</strong></td><td class="n">14</td><td class="n">10</td><td class="n">4</td><td class="n">$5M–$25M</td><td>Consumer</td></tr>
+        <tr><td>Apple</td><td class="n">6</td><td class="n">5</td><td class="n">1</td><td class="n">$100K–$250K</td><td>Tech</td></tr>
+        <tr><td>NVIDIA</td><td class="n">9</td><td class="n">7</td><td class="n">2</td><td class="n">$100K–$250K</td><td>Semi</td></tr>
+        <tr><td>Alphabet</td><td class="n">8</td><td class="n">6</td><td class="n">2</td><td class="n">$100K–$250K</td><td>Comm</td></tr>
+        <tr><td>Broadcom</td><td class="n">7</td><td class="n">5</td><td class="n">2</td><td class="n">$250K–$500K</td><td>Semi</td></tr>
+        <tr><td>Oracle</td><td class="n">11</td><td class="n">7</td><td class="n">4</td><td class="n">$100K–$250K</td><td>Tech</td></tr>
+        <tr><td>Eli Lilly</td><td class="n">5</td><td class="n">4</td><td class="n">1</td><td class="n">$100K–$250K</td><td>Pharma</td></tr>
+        <tr><td>UnitedHealth</td><td class="n">8</td><td class="n">6</td><td class="n">2</td><td class="n">$100K–$250K</td><td>Health</td></tr>
+        <tr><td>JPMorgan</td><td class="n">8</td><td class="n">6</td><td class="n">2</td><td class="n">$100K–$250K</td><td>Finance</td></tr>
       </tbody>
     </table>
   </div>
 </div>
 
-<!-- ═══════ OGE 制度说明 ═══════ -->
+<!-- Compliance -->
 <div class="section">
-  <h2>OGE Form 278-T 制度与合规说明</h2>
+  <h2 data-i18n="comp_title"></h2>
   <div class="g2">
     <div>
-      <h3>制度要点</h3>
-      <div style="font-size:clamp(.78rem,1.5vw,.88rem);line-height:1.8;color:var(--muted)">
-        <p><strong style="color:var(--text)">申报要求：</strong>高级政府官员须在交易确认后 30 天内申报超 $1,000 的证券交易。</p>
-        <p style="margin-top:.4rem"><strong style="color:var(--text)">披露范围：</strong>涵盖本人、配偶及受抚养子女。不含共同基金、储蓄账户、国债、退休金账户。</p>
-        <p style="margin-top:.4rem"><strong style="color:var(--text)">金额区间：</strong>OGE 使用区间制（如 $15,001–$50,000）而非精确金额，保护隐私但增加分析难度。</p>
-        <p style="margin-top:.4rem"><strong style="color:var(--text)">UNSOLICITED：</strong>经纪人/受托人在未经申报人指示的情况下执行交易——盲信委托的典型特征。</p>
+      <h3 data-i18n="comp制度"></h3>
+      <div style="font-size:clamp(.76rem,1.4vw,.86rem);line-height:1.8;color:var(--muted)">
+        <p data-i18n="comp_r1"></p>
+        <p style="margin-top:.35rem" data-i18n="comp_r2"></p>
+        <p style="margin-top:.35rem" data-i18n="comp_r3"></p>
+        <p style="margin-top:.35rem" data-i18n="comp_r4"></p>
       </div>
     </div>
     <div>
-      <h3>利益冲突评估</h3>
-      <div style="font-size:clamp(.78rem,1.5vw,.88rem);line-height:1.8;color:var(--muted)">
-        <p><strong style="color:var(--green)">✓ 正面：</strong>大规模出售直接持股，减少个人利益与政策决策的潜在冲突。</p>
-        <p style="margin-top:.4rem"><strong style="color:var(--green)">✓ 正面：</strong>绝大多数交易为 UNSOLICITED，申报人未直接参与交易决策。</p>
-        <p style="margin-top:.4rem"><strong style="color:var(--yellow)">⚠ 关注：</strong>Microsoft、Oracle 等同时是政府大型合同承包商。</p>
-        <p style="margin-top:.4rem"><strong style="color:var(--yellow)">⚠ 关注：</strong>出售个股后是否转入 ETF 未披露——ETF 持仓的间接利益冲突仍存在。</p>
+      <h3 data-i18n="comp_冲突"></h3>
+      <div style="font-size:clamp(.76rem,1.4vw,.86rem);line-height:1.8;color:var(--muted)">
+        <p data-i18n="comp_c1"></p>
+        <p style="margin-top:.35rem" data-i18n="comp_c2"></p>
+        <p style="margin-top:.35rem" data-i18n="comp_c3"></p>
+        <p style="margin-top:.35rem" data-i18n="comp_c4"></p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════ 总结 ═══════ -->
+<!-- Summary -->
 <div class="section">
-  <h2>总结</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:.75rem">
-    <div class="scard" style="background:rgba(34,197,94,.08)"><div class="scard-title" style="color:var(--green)">交易规模</div><div class="scard-desc">3,642 笔交易，800+ 家公司，预估总金额约 <strong>$18 亿</strong>。是有记录以来最大规模的个人证券交易申报之一。</div></div>
-    <div class="scard" style="background:rgba(59,130,246,.08)"><div class="scard-title" style="color:var(--accent)">核心操作</div><div class="scard-desc">净卖出约 <strong>$17.3 亿</strong>。本质上是一次系统性的<strong>资产清算</strong>——卖出金额是买入的 50 倍。</div></div>
-    <div class="scard" style="background:rgba(168,85,247,.08)"><div class="scard-title" style="color:var(--purple)">管理方式</div><div class="scard-desc">95%+ UNSOLICITED，持仓呈<strong>指数化、分散化</strong>特征，符合盲信委托或规则化处置策略。</div></div>
-    <div class="scard" style="background:rgba(249,115,22,.08)"><div class="scard-title" style="color:var(--orange)">合规意义</div><div class="scard-desc">大规模出售体现<strong>就职合规处置</strong>要求。处置后资产去向（现金/ETF/国债）在本表中未披露。</div></div>
+  <h2 data-i18n="sum_title"></h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:.7rem">
+    <div class="scard" style="background:rgba(34,197,94,.08)"><div class="scard-title" style="color:var(--green)" data-i18n="sum1_title"></div><div class="scard-desc" data-i18n="sum1_desc"></div></div>
+    <div class="scard" style="background:rgba(59,130,246,.08)"><div class="scard-title" style="color:var(--accent)" data-i18n="sum2_title"></div><div class="scard-desc" data-i18n="sum2_desc"></div></div>
+    <div class="scard" style="background:rgba(168,85,247,.08)"><div class="scard-title" style="color:var(--purple)" data-i18n="sum3_title"></div><div class="scard-desc" data-i18n="sum3_desc"></div></div>
+    <div class="scard" style="background:rgba(249,115,22,.08)"><div class="scard-title" style="color:var(--orange)" data-i18n="sum4_title"></div><div class="scard-desc" data-i18n="sum4_desc"></div></div>
   </div>
 </div>
 
 </div><!-- /container -->
 
 <div class="footer">
-  <p>数据来源：OGE Form 278-T | 2026年5月8日提交 | 交易区间：2026年1月—3月</p>
-  <p>金额为 OGE 区间中位数估算，实际金额可能有差异</p>
+  <p data-i18n="footer1"></p>
+  <p data-i18n="footer2"></p>
 </div>
 
+<script src="assets/i18n.js"></script>
 <script>
 Chart.register(ChartDataLabels);
 const C={blue:'#3b82f6',green:'#22c55e',red:'#ef4444',yellow:'#eab308',purple:'#a855f7',orange:'#f97316',cyan:'#06b6d4',pink:'#ec4899',lime:'#84cc16',indigo:'#6366f1',teal:'#14b8a6',amber:'#f59e0b'};
 Chart.defaults.color='#9ca3af';
 Chart.defaults.borderColor='rgba(42,45,58,0.6)';
 Chart.defaults.font.family="-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif";
-const dl={color:'#fff',font:{weight:'bold',size:11},formatter:(v,c)=>{const t=c.dataset.data.reduce((a,b)=>a+b,0);return(t?v/t*100:v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)+'%'}};
 
-// ── Type donut ──
-new Chart(document.getElementById('c_type'),{type:'doughnut',data:{labels:['出售 Sale','购买 Purchase'],datasets:[{data:[2574,1068],backgroundColor:[C.red,C.green],borderColor:'#1a1d27',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,font:{size:12}}},datalabels:dl,title:{display:true,text:'交易类型分布',color:'#e4e4e7',font:{size:13}}}}});
+const charts = {};
 
-// ── Buy vs Sell bar ──
-new Chart(document.getElementById('c_buySell'),{type:'bar',data:{labels:['$1K-$15K','$15K-$50K','$50K-$100K','$100K-$250K','$250K-$500K','$500K-$1M','$1M-$5M','$5M-$25M'],datasets:[{label:'出售',data:[656,456,336,316,214,146,437,11],backgroundColor:C.red+'aa',borderColor:C.red,borderWidth:1,borderRadius:3},{label:'购买',data:[412,612,28,12,4,0,0,0],backgroundColor:C.green+'aa',borderColor:C.green,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{usePointStyle:true,font:{size:11}}},datalabels:{display:false},title:{display:true,text:'各金额区间的出售 vs 购买笔数',color:'#e4e4e7',font:{size:13}}},scales:{x:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{font:{size:10},maxRotation:45}},y:{grid:{color:'rgba(42,45,58,0.4)'},beginAtZero:true}}}});
+function makeDl(suffix) {
+  return { color:'#fff', font:{weight:'bold',size:11}, formatter:(v,c)=>{
+    const t=c.dataset.data.reduce((a,b)=>a+b,0);
+    return t?(v/t*100).toFixed(1)+'%':'';
+  }};
+}
 
-// ── Sell amount bar ──
-new Chart(document.getElementById('c_sellAmt'),{type:'bar',data:{labels:['<$15K','$15K-$50K','$50K-$100K','$100K-$250K','$250K-$500K','$500K-$1M','$1M-$5M','$5M-$25M'],datasets:[{label:'笔数',data:[656,456,336,316,214,146,437,11],backgroundColor:[C.blue,C.cyan,C.teal,C.green,C.yellow,C.orange,C.red,C.purple],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},datalabels:{anchor:'end',align:'end',color:'#9ca3af',font:{size:10},formatter:v=>v.toLocaleString()},title:{display:true,text:'售出 — 笔数分布',color:'#e4e4e7',font:{size:12}}},scales:{x:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+function buildCharts() {
+  // Destroy existing
+  Object.values(charts).forEach(c => c.destroy());
 
-// ── Sell sector polar ──
-new Chart(document.getElementById('c_sellSector'),{type:'polarArea',data:{labels:['科技','金融','通信','医疗','消费','能源','半导体','工业','ETF','其他'],datasets:[{data:[620,260,340,160,130,120,85,70,40,45],backgroundColor:[C.blue+'88',C.green+'88',C.purple+'88',C.red+'88',C.yellow+'88',C.orange+'88',C.cyan+'88',C.pink+'88',C.lime+'88',C.indigo+'88']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:6,usePointStyle:true,font:{size:10}}},datalabels:{display:false},title:{display:true,text:'售出 — 行业金额分布 ($M)',color:'#e4e4e7',font:{size:12}}},scales:{r:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{display:false}}}}});
+  charts.type = new Chart(document.getElementById('c_type'),{type:'doughnut',data:{labels:[t('tag_sale'),t('tag_purchase')],datasets:[{data:[2574,1068],backgroundColor:[C.red,C.green],borderColor:'#1a1d27',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,font:{size:12}}},datalabels:makeDl(),title:{display:true,text:t('chart_type_title'),color:'#e4e4e7',font:{size:13}}}}});
 
-// ── Buy amount bar ──
-new Chart(document.getElementById('c_buyAmt'),{type:'bar',data:{labels:['<$15K','$15K-$50K','$50K-$100K','$100K-$250K','$250K-$500K'],datasets:[{label:'笔数',data:[412,612,28,12,4],backgroundColor:[C.green,C.teal,C.cyan,C.blue,C.purple],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},datalabels:{anchor:'end',align:'end',color:'#9ca3af',font:{size:10},formatter:v=>v.toLocaleString()},title:{display:true,text:'购买 — 笔数分布',color:'#e4e4e7',font:{size:12}}},scales:{x:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
+  charts.buySell = new Chart(document.getElementById('c_buySell'),{type:'bar',data:{labels:['$1K-$15K','$15K-$50K','$50K-$100K','$100K-$250K','$250K-$500K','$500K-$1M','$1M-$5M','$5M-$25M'],datasets:[{label:t('tag_sale'),data:[656,456,336,316,214,146,437,11],backgroundColor:C.red+'aa',borderColor:C.red,borderWidth:1,borderRadius:3},{label:t('tag_purchase'),data:[412,612,28,12,4,0,0,0],backgroundColor:C.green+'aa',borderColor:C.green,borderWidth:1,borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{usePointStyle:true,font:{size:11}}},datalabels:{display:false},title:{display:true,text:t('chart_buysell_title'),color:'#e4e4e7',font:{size:13}}},scales:{x:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{font:{size:10},maxRotation:45}},y:{grid:{color:'rgba(42,45,58,0.4)'},beginAtZero:true}}}});
 
-// ── Buy sector ──
-new Chart(document.getElementById('c_buySector'),{type:'polarArea',data:{labels:['科技','金融','医疗','消费','能源','通信','半导体','其他'],datasets:[{data:[8.5,4.8,4.2,3.8,2.2,1.8,1.5,8.2],backgroundColor:[C.blue+'88',C.green+'88',C.red+'88',C.yellow+'88',C.orange+'88',C.purple+'88',C.cyan+'88',C.pink+'88']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:6,usePointStyle:true,font:{size:10}}},datalabels:{display:false},title:{display:true,text:'购买 — 行业金额分布 ($M)',color:'#e4e4e7',font:{size:12}}},scales:{r:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{display:false}}}}});
+  charts.sellAmt = new Chart(document.getElementById('c_sellAmt'),{type:'bar',data:{labels:['<$15K','$15K-$50K','$50K-$100K','$100K-$250K','$250K-$500K','$500K-$1M','$1M-$5M','$5M-$25M'],datasets:[{data:[656,456,336,316,214,146,437,11],backgroundColor:[C.blue,C.cyan,C.teal,C.green,C.yellow,C.orange,C.red,C.purple],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},datalabels:{anchor:'end',align:'end',color:'#9ca3af',font:{size:10},formatter:v=>v.toLocaleString()},title:{display:true,text:t('sell_chart_title'),color:'#e4e4e7',font:{size:12}}},scales:{x:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
 
-// ── Sell method donut ──
-new Chart(document.getElementById('c_sellMethod'),{type:'doughnut',data:{labels:['UNSOLICITED','SOLICITED','其他'],datasets:[{data:[2497,62,15],backgroundColor:[C.purple,C.blue,C.yellow],borderColor:'#1a1d27',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,font:{size:10}}},datalabels:{color:'#fff',font:{weight:'bold',size:10},formatter:(v,c)=>(v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)+'%'},title:{display:true,text:'售出 — 交易方式',color:'#e4e4e7',font:{size:12}}}}});
+  charts.sellSector = new Chart(document.getElementById('c_sellSector'),{type:'polarArea',data:{labels:['Tech','Finance','Comm','Health','Consumer','Energy','Semi','Industrial','ETF','Other'],datasets:[{data:[620,260,340,160,130,120,85,70,40,45],backgroundColor:[C.blue+'88',C.green+'88',C.purple+'88',C.red+'88',C.yellow+'88',C.orange+'88',C.cyan+'88',C.pink+'88',C.lime+'88',C.indigo+'88']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:6,usePointStyle:true,font:{size:10}}},datalabels:{display:false},title:{display:true,text:t('sell_polar_title'),color:'#e4e4e7',font:{size:12}}},scales:{r:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{display:false}}}}});
 
-// ── Buy method donut ──
-new Chart(document.getElementById('c_buyMethod'),{type:'doughnut',data:{labels:['UNSOLICITED','SOLICITED','其他'],datasets:[{data:[982,60,26],backgroundColor:[C.purple,C.blue,C.yellow],borderColor:'#1a1d27',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,font:{size:10}}},datalabels:{color:'#fff',font:{weight:'bold',size:10},formatter:(v,c)=>(v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)+'%'},title:{display:true,text:'购买 — 交易方式',color:'#e4e4e7',font:{size:12}}}}});
+  charts.buyAmt = new Chart(document.getElementById('c_buyAmt'),{type:'bar',data:{labels:['<$15K','$15K-$50K','$50K-$100K','$100K-$250K','$250K-$500K'],datasets:[{data:[412,612,28,12,4],backgroundColor:[C.green,C.teal,C.cyan,C.blue,C.purple],borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false},datalabels:{anchor:'end',align:'end',color:'#9ca3af',font:{size:10},formatter:v=>v.toLocaleString()},title:{display:true,text:t('buy_chart_title'),color:'#e4e4e7',font:{size:12}}},scales:{x:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{font:{size:10}}},y:{grid:{display:false},ticks:{font:{size:10}}}}}});
 
-// ── Timeline stacked ──
-new Chart(document.getElementById('c_timeline'),{type:'bar',data:{labels:['1月W1','1月W2','1月W3','1月W4','2月W1','2月W2','2月W3','2月W4','3月W1','3月W2','3月W3','3月W4'],datasets:[{label:'出售',data:[45,80,110,120,140,170,195,230,210,320,380,260],backgroundColor:C.red+'bb',borderRadius:2},{label:'购买',data:[25,35,40,45,50,55,60,65,60,70,80,45],backgroundColor:C.green+'bb',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{usePointStyle:true,font:{size:11}}},datalabels:{display:false},title:{display:true,text:'周度交易量趋势（出售 vs 购买）',color:'#e4e4e7',font:{size:13}}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid:{color:'rgba(42,45,58,0.4)'},beginAtZero:true,title:{display:true,text:'笔数',color:'#9ca3af',font:{size:11}}}}}});
+  charts.buySector = new Chart(document.getElementById('c_buySector'),{type:'polarArea',data:{labels:['Tech','Finance','Health','Consumer','Energy','Comm','Semi','Other'],datasets:[{data:[8.5,4.8,4.2,3.8,2.2,1.8,1.5,8.2],backgroundColor:[C.blue+'88',C.green+'88',C.red+'88',C.yellow+'88',C.orange+'88',C.purple+'88',C.cyan+'88',C.pink+'88']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{padding:6,usePointStyle:true,font:{size:10}}},datalabels:{display:false},title:{display:true,text:t('buy_polar_title'),color:'#e4e4e7',font:{size:12}}},scales:{r:{grid:{color:'rgba(42,45,58,0.4)'},ticks:{display:false}}}}});
 
-// ── Sell Top bars ──
-const sellTop=[{n:'Meta Platforms',v:57.5,c:C.blue},{n:'Microsoft',v:57.5,c:C.cyan},{n:'Amazon',v:57.5,c:C.orange},{n:'Broadcom',v:15,c:C.purple},{n:'Netflix',v:12,c:C.red},{n:'NVIDIA',v:12,c:C.green},{n:'Apple',v:10,c:C.teal},{n:'Alphabet',v:10,c:C.yellow},{n:'Oracle',v:8,c:C.indigo},{n:'Salesforce',v:8,c:C.pink},{n:'JPMorgan',v:7,c:C.lime},{n:'UnitedHealth',v:7,c:C.amber},{n:'Goldman Sachs',v:6,c:C.blue},{n:'Bank of America',v:6,c:C.cyan},{n:'Eli Lilly',v:6,c:C.green},{n:'Chevron',v:5,c:C.orange},{n:'Pfizer',v:5,c:C.teal},{n:'Intel',v:5,c:C.indigo},{n:'Adobe',v:4.5,c:C.purple},{n:'AbbVie',v:4.5,c:C.pink}];
-const sellEl=document.getElementById('sellTop');const sMax=Math.max(...sellTop.map(d=>d.v));
-sellTop.forEach(d=>{const r=document.createElement('div');r.className='hrow';r.innerHTML=`<div class="hlbl">${d.n}</div><div style="flex:1;display:flex;align-items:center"><div class="hbar" style="width:${d.v/sMax*100}%;background:${d.c}"></div></div><div class="hval">~$${d.v}M</div>`;sellEl.appendChild(r)});
+  charts.sellMethod = new Chart(document.getElementById('c_sellMethod'),{type:'doughnut',data:{labels:['UNSOLICITED','SOLICITED','Other'],datasets:[{data:[2497,62,15],backgroundColor:[C.purple,C.blue,C.yellow],borderColor:'#1a1d27',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,font:{size:10}}},datalabels:{color:'#fff',font:{weight:'bold',size:10},formatter:(v,c)=>(v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)+'%'},title:{display:true,text:t('sell_donut_title'),color:'#e4e4e7',font:{size:12}}}}});
 
-// ── Buy Top bars ──
-const buyTop=[{n:'Microsoft',v:6,c:C.cyan},{n:'Oracle',v:4.8,c:C.indigo},{n:'Citigroup',v:4.5,c:C.green},{n:'Goldman Sachs',v:4,c:C.lime},{n:'Meta Platforms',v:4,c:C.blue},{n:'Adobe',v:3.5,c:C.purple},{n:'Amazon',v:3.5,c:C.orange},{n:'Chevron',v:3,c:C.red},{n:'Bank of America',v:3,c:C.cyan},{n:'NVIDIA',v:2.8,c:C.green},{n:'AbbVie',v:2.5,c:C.pink},{n:'Pfizer',v:2.5,c:C.teal},{n:'Intel',v:2.2,c:C.indigo},{n:'Salesforce',v:2,c:C.yellow},{n:'AMD',v:1.8,c:C.lime},{n:'Gilead',v:1.5,c:C.amber},{n:'Amgen',v:1.5,c:C.orange},{n:'Home Depot',v:1.2,c:C.red},{n:'McDonald\'s',v:1,c:C.blue},{n:'Starbucks',v:0.8,c:C.green}];
-const buyEl=document.getElementById('buyTop');const bMax=Math.max(...buyTop.map(d=>d.v));
-buyTop.forEach(d=>{const r=document.createElement('div');r.className='hrow';r.innerHTML=`<div class="hlbl">${d.n}</div><div style="flex:1;display:flex;align-items:center"><div class="hbar" style="width:${d.v/bMax*100}%;background:${d.c}"></div></div><div class="hval">~$${d.v}M</div>`;buyEl.appendChild(r)});
+  charts.buyMethod = new Chart(document.getElementById('c_buyMethod'),{type:'doughnut',data:{labels:['UNSOLICITED','SOLICITED','Other'],datasets:[{data:[982,60,26],backgroundColor:[C.purple,C.blue,C.yellow],borderColor:'#1a1d27',borderWidth:3}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'bottom',labels:{padding:10,usePointStyle:true,font:{size:10}}},datalabels:{color:'#fff',font:{weight:'bold',size:10},formatter:(v,c)=>(v/c.dataset.data.reduce((a,b)=>a+b,0)*100).toFixed(1)+'%'},title:{display:true,text:t('buy_donut_title'),color:'#e4e4e7',font:{size:12}}}}});
 
-// ── Dual table ──
-const dualData=[
-  {n:'Microsoft',t:18,s:12,b:6,ind:'科技'},{n:'Meta Platforms',t:15,s:11,b:4,ind:'通信'},
-  {n:'Amazon',t:14,s:10,b:4,ind:'消费'},{n:'Citigroup',t:12,s:8,b:4,ind:'金融'},
-  {n:'Oracle',t:11,s:7,b:4,ind:'科技'},{n:'Adobe',t:10,s:7,b:3,ind:'科技'},
-  {n:'Chevron',t:10,s:7,b:3,ind:'能源'},{n:'NVIDIA',t:9,s:7,b:2,ind:'半导体'},
-  {n:'Goldman Sachs',t:9,s:6,b:3,ind:'金融'},{n:'Bank of America',t:9,s:6,b:3,ind:'金融'},
-  {n:'Coca-Cola',t:8,s:6,b:2,ind:'消费'},{n:'UnitedHealth',t:8,s:6,b:2,ind:'医疗'},
-  {n:'JPMorgan',t:8,s:6,b:2,ind:'金融'},{n:'PepsiCo',t:7,s:5,b:2,ind:'消费'},
-  {n:'Johnson & Johnson',t:7,s:5,b:2,ind:'医疗'},{n:'Eli Lilly',t:7,s:5,b:2,ind:'制药'},
-  {n:'Broadcom',t:7,s:5,b:2,ind:'半导体'},{n:'Salesforce',t:7,s:5,b:2,ind:'科技'},
-  {n:'Home Depot',t:7,s:5,b:2,ind:'消费'},{n:'AbbVie',t:7,s:5,b:2,ind:'制药'}
-];
-const dBody=document.querySelector('#dualTable tbody');
-dualData.forEach(d=>{
-  const net=d.s>d.b?'净卖出':'净买入';
-  const cls=d.s>d.b?'tag-s':'tag-p';
-  dBody.innerHTML+=`<tr><td>${d.n}</td><td class="n">${d.t}</td><td class="n">${d.s}</td><td class="n">${d.b}</td><td><span class="tag ${cls}">${net}</span></td><td>${d.ind}</td></tr>`;
-});
+  charts.timeline = new Chart(document.getElementById('c_timeline'),{type:'bar',data:{labels:['Jan W1','Jan W2','Jan W3','Jan W4','Feb W1','Feb W2','Feb W3','Feb W4','Mar W1','Mar W2','Mar W3','Mar W4'],datasets:[{label:t('tag_sale'),data:[45,80,110,120,140,170,195,230,210,320,380,260],backgroundColor:C.red+'bb',borderRadius:2},{label:t('tag_purchase'),data:[25,35,40,45,50,55,60,65,60,70,80,45],backgroundColor:C.green+'bb',borderRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{usePointStyle:true,font:{size:11}}},datalabels:{display:false},title:{display:true,text:t('chart_timeline_title'),color:'#e4e4e7',font:{size:13}}},scales:{x:{stacked:true,grid:{display:false},ticks:{font:{size:10}}},y:{stacked:true,grid:{color:'rgba(42,45,58,0.4)'},beginAtZero:true}}}});
+}
+
+function buildDynamicContent() {
+  // Sell top bars
+  const sellTop=[{n:'Meta Platforms',v:57.5},{n:'Microsoft',v:57.5},{n:'Amazon',v:57.5},{n:'Broadcom',v:15},{n:'Netflix',v:12},{n:'NVIDIA',v:12},{n:'Apple',v:10},{n:'Alphabet',v:10},{n:'Oracle',v:8},{n:'Salesforce',v:8},{n:'JPMorgan',v:7},{n:'UnitedHealth',v:7},{n:'Goldman Sachs',v:6},{n:'Bank of America',v:6},{n:'Eli Lilly',v:6},{n:'Chevron',v:5},{n:'Pfizer',v:5},{n:'Intel',v:5},{n:'Adobe',v:4.5},{n:'AbbVie',v:4.5}];
+  const colors=[C.blue,C.cyan,C.orange,C.purple,C.red,C.green,C.teal,C.yellow,C.indigo,C.pink,C.lime,C.amber,C.blue,C.cyan,C.green,C.orange,C.teal,C.indigo,C.purple,C.pink];
+  const sEl=document.getElementById('sellTop');sEl.innerHTML='';
+  const sM=Math.max(...sellTop.map(d=>d.v));
+  sellTop.forEach((d,i)=>{const r=document.createElement('div');r.className='hrow';r.innerHTML=`<div class="hlbl">${d.n}</div><div style="flex:1;display:flex;align-items:center"><div class="hbar" style="width:${d.v/sM*100}%;background:${colors[i%colors.length]}"></div></div><div class="hval">~$${d.v}M</div>`;sEl.appendChild(r)});
+
+  // Buy top bars
+  const buyTop=[{n:'Microsoft',v:6},{n:'Oracle',v:4.8},{n:'Citigroup',v:4.5},{n:'Goldman Sachs',v:4},{n:'Meta Platforms',v:4},{n:'Adobe',v:3.5},{n:'Amazon',v:3.5},{n:'Chevron',v:3},{n:'Bank of America',v:3},{n:'NVIDIA',v:2.8},{n:'AbbVie',v:2.5},{n:'Pfizer',v:2.5},{n:'Intel',v:2.2},{n:'Salesforce',v:2},{n:'AMD',v:1.8},{n:'Gilead',v:1.5},{n:'Amgen',v:1.5},{n:'Home Depot',v:1.2},{n:'McDonald\'s',v:1},{n:'Starbucks',v:0.8}];
+  const bEl=document.getElementById('buyTop');bEl.innerHTML='';
+  const bM=Math.max(...buyTop.map(d=>d.v));
+  buyTop.forEach((d,i)=>{const r=document.createElement('div');r.className='hrow';r.innerHTML=`<div class="hlbl">${d.n}</div><div style="flex:1;display:flex;align-items:center"><div class="hbar" style="width:${d.v/bM*100}%;background:${colors[i%colors.length]}"></div></div><div class="hval">~$${d.v}M</div>`;bEl.appendChild(r)});
+
+  // Dual table
+  const dual=[
+    {n:'Microsoft',t:18,s:12,b:6,i:'Tech'},{n:'Meta Platforms',t:15,s:11,b:4,i:'Comm'},
+    {n:'Amazon',t:14,s:10,b:4,i:'Consumer'},{n:'Citigroup',t:12,s:8,b:4,i:'Finance'},
+    {n:'Oracle',t:11,s:7,b:4,i:'Tech'},{n:'Adobe',t:10,s:7,b:3,i:'Tech'},
+    {n:'Chevron',t:10,s:7,b:3,i:'Energy'},{n:'NVIDIA',t:9,s:7,b:2,i:'Semi'},
+    {n:'Goldman Sachs',t:9,s:6,b:3,i:'Finance'},{n:'Bank of America',t:9,s:6,b:3,i:'Finance'},
+    {n:'Coca-Cola',t:8,s:6,b:2,i:'Consumer'},{n:'UnitedHealth',t:8,s:6,b:2,i:'Health'},
+    {n:'JPMorgan',t:8,s:6,b:2,i:'Finance'},{n:'PepsiCo',t:7,s:5,b:2,i:'Consumer'},
+    {n:'J&J',t:7,s:5,b:2,i:'Health'},{n:'Eli Lilly',t:7,s:5,b:2,i:'Pharma'},
+    {n:'Broadcom',t:7,s:5,b:2,i:'Semi'},{n:'Salesforce',t:7,s:5,b:2,i:'Tech'},
+    {n:'Home Depot',t:7,s:5,b:2,i:'Consumer'},{n:'AbbVie',t:7,s:5,b:2,i:'Pharma'}
+  ];
+  const tbody=document.querySelector('#dualTable tbody');tbody.innerHTML='';
+  dual.forEach(d=>{
+    const net=d.s>d.b?t('net_sell'):t('net_buy');
+    const cls=d.s>d.b?'tag-s':'tag-p';
+    tbody.innerHTML+=`<tr><td>${d.n}</td><td class="n">${d.t}</td><td class="n">${d.s}</td><td class="n">${d.b}</td><td><span class="tag ${cls}">${net}</span></td><td>${d.i}</td></tr>`;
+  });
+}
+
+function rebuildDynamicContent() {
+  buildCharts();
+  buildDynamicContent();
+}
+
+// Init
+applyLang();
+rebuildDynamicContent();
 </script>
 </body>
 </html>
